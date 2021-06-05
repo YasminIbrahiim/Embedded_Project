@@ -9,7 +9,6 @@ GPIO_PORTB_DEN_R |=0xF0;
 GPIO_PORTB_AMSEL_R &=~0xF0;
 GPIO_PORTB_AFSEL_R &=~0xF0;
 GPIO_PORTB_PCTL_R &=~0xFFFF0000;
-	GPIO_PORTB_DATA_R &=~0xF0;
 }
 void portA_Int(void){ // use last 4pins of portA as an output
 	SYSCTL_RCGCGPIO_R |= 0x01;
@@ -28,14 +27,15 @@ GPIO_PORTE_DEN_R |= 0x1E;
 GPIO_PORTE_AMSEL_R &=~0x1E;
 GPIO_PORTE_AFSEL_R &=~0x1E;
 GPIO_PORTE_PCTL_R &=~0x000FFFF0;
-	GPIO_PORTE_DATA_R &=~ 0x1E;
 }
 //this function output the data to the pins
 void decoder_segment (unsigned char a,unsigned char b,unsigned char c){
-		GPIO_PORTB_DATA_R&=~0xF0;
-		GPIO_PORTB_DATA_R=(b<<4);
+		GPIO_PORTB_DATA_R&=~0xF0; // reset  the last 4pins for portB 
+	GPIO_PORTA_DATA_R &=~0xF0; // reset  the last 4pins of portA
+		GPIO_PORTE_DATA_R &=~ 0x1E; // reset output pins of portE
+	GPIO_PORTB_DATA_R|=(b<<4);
 		GPIO_PORTA_DATA_R |=(a<<4);
-	GPIO_PORTE_DATA_R =(c<<1);}
+	GPIO_PORTE_DATA_R |=(c<<1);}
 
 	void segment_display(unsigned int distance){ // this function display the units,tens and hundredth of the calculated distance
 		unsigned char a,b,c;
