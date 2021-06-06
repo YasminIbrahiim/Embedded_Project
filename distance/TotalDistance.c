@@ -5,9 +5,9 @@
 double deg2rad(double deg);
 double rad2deg(double rad);
 double distance(double lat1,double lon1,double lon2,double lat2);
-double Update_distance(double lat, double lon);
-double call_back(double(*ptr)());
-double get_coordinates();
+int Update_distance(double lat, double lon);
+int call_back(int(*ptr)());
+int get_coordinates();
 
 double distance(double lat1,double lon1,double lon2,double lat2)
 {
@@ -25,7 +25,6 @@ double distance(double lat1,double lon1,double lon2,double lat2)
         dist = acos(dist);
         dist = rad2deg(dist);
         dist = dist * 60 * 1.1515 * 1609.344; // distance is now in miles * 1609.344 in meters
-        dist = (int)dist;
         printf("distance = %lf\n",dist);
 		return dist; 		// in meters 
     }
@@ -42,37 +41,34 @@ double rad2deg(double rad) {
 double prev_lat = 0 ;
 double prev_lon = 0 ;
 double Total_distance = 0;
-double Update_distance(double lati, double loni){
-    
-    
-    
-    while( Total_distance < 100){
+int Update_distance(double lati, double loni){   
 		
         if ((prev_lat != 0 ) && (prev_lon != 0)){
           printf("not equal 0 = \n" );
+		  while( Total_distance < 100){
          Total_distance += distance(prev_lat , prev_lon, loni ,lati );
-		 printf("Total_distance = %lf\n",Total_distance);
+		   
            prev_lat = lati;
            prev_lon = loni;
-			double(*ptr)() = &get_coordinates;
-			
-			call_back(ptr);
-			
+			int(*ptr)() = &get_coordinates;			
+			call_back(ptr);	
+}
+		   int d = (int) Total_distance;
+           printf("total = %d\n",d); 
+		   return d;			
         }   		
 			prev_lat = lati;
            prev_lon = loni;
 		   printf("equal 0\n");
-		   double(*ptr)() = &get_coordinates;
+		   int(*ptr)() = &get_coordinates;
 			call_back(ptr);
-           }
-           return Total_distance;
-           printf("total = %lf\n",Total_distance); 
+           
 		  } 
 
-double call_back(double(*ptr)()){
+int call_back(int(*ptr)()){
 	(*ptr) ();
 }
-double get_coordinates(){ 
+int get_coordinates(){ 
  double lat;
  double lon;
 	 printf("Enter lat , lon\n ");
@@ -81,8 +77,8 @@ double get_coordinates(){
 	
 	 }
 
-double main (){
-double(*ptr)() = &get_coordinates;
+int main (){
+int(*ptr)() = &get_coordinates;
 call_back(ptr);
 return(0);
 }
