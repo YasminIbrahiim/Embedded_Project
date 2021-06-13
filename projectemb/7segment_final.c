@@ -1,5 +1,12 @@
+
+// this code is used to dispaly different 3 digit number on a 7 segments using tiva and also introduce a function to convert string to double 
+
+#include<stdio.h>
+#include<math.h>
+#include<string.h>
 #include "E:\nadeen lab\tm4c123gh6pm.h"
-#include <stdint.h>
+#include "tm4c123.h"
+
 void SystemInit(){};
 void portB_Int(void){ // use last 4pins of portB as an output
 	SYSCTL_RCGCGPIO_R |= 0x02;
@@ -44,9 +51,43 @@ void decoder_segment (unsigned char a,unsigned char b,unsigned char c){
 	a=(distance%10);
 		decoder_segment(a,b,c);}
 	
-	int main(){
-		portB_Int();
+		//this function is used to convert string to double
+double str_to_num(const char* str) {
+	double final = 0;
+	int count = 0;
+	int dec_point = 0;
+	int dec_num;
+	for (; *str; str++) {
+		if (*str == '.') {
+			dec_point = 1;
+			continue;
+		}
+		dec_num = *str - '0';
+		if (dec_num >= 0 && dec_num <= 9) {
+			if (dec_point == 1) {
+				count++;
+			}
+			final = (final * 10.0) + dec_num;
+
+		}
+	}
+	final = final / pow(10.0, count);
+
+	return final;
+}
+double y;
+char x[] = { '2','3','4','.','8' };
+int main()
+{
+	 SCB->CPACR |= ((3UL << 10*2) | (3UL << 11*2) );
+SystemInit();
+ 
+	portB_Int();
 		portE_Int();
 		portA_Int();
 		segment_display(424);
-	}
+	y = str_to_num(x);
+}
+
+	
+	
