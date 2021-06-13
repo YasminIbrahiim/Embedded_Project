@@ -15,7 +15,7 @@ GPIO_PORTF_PCTL_R &= ~0x0000FFF0;
 }
 void LED(unsigned int x){
 	if (x > 100){
-		GPIO_PORTF_DATA_R = 0x02; };
+		GPIO_PORTF_DATA_R |= 0x02; };
    }
 int main(){
 	LED_init();
