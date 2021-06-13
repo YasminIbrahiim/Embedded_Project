@@ -3,6 +3,7 @@
 
 #include<stdio.h>
 #include<math.h>
+#include <stdint.h>
 #include<string.h>
 #include "E:\nadeen lab\tm4c123gh6pm.h"
 #include "tm4c123.h"
